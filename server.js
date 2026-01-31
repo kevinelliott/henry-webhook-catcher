@@ -6,26 +6,32 @@ const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const IS_SERVERLESS = process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME;
 const DATA_DIR = process.env.DATA_DIR || './data';
 const DATA_FILE = path.join(DATA_DIR, 'webhooks.json');
 
-// Ensure data directory exists
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
-}
-
-// Load or initialize data
+// Initialize data (in-memory for serverless, file-based locally)
 let data = { endpoints: {}, requests: {} };
-if (fs.existsSync(DATA_FILE)) {
-  try {
-    data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-  } catch (e) {
-    console.log('Starting with fresh data');
+
+if (!IS_SERVERLESS) {
+  // Local: Ensure data directory exists and load from file
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+  if (fs.existsSync(DATA_FILE)) {
+    try {
+      data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+    } catch (e) {
+      console.log('Starting with fresh data');
+    }
   }
 }
 
 function saveData() {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+  // Only persist to file in non-serverless environments
+  if (!IS_SERVERLESS) {
+    fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+  }
 }
 
 // Middleware
