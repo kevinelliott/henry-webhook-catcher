@@ -207,7 +207,12 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`🪝 Webhook Catcher running on http://localhost:${PORT}`);
-});
+// Start server (local development)
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`🪝 Webhook Catcher running on http://localhost:${PORT}`);
+  });
+}
+
+// Export for Vercel
+module.exports = app;
