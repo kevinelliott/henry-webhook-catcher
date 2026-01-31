@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🪝 Webhook Catcher</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🪝 Webhook Catcher</h1>
+      <p class="subtitle">Debug webhooks locally. No accounts. No limits. Just yours.</p>
+    </header>
+
+    <main>
+      <div class="toolbar">
+        <button id="newEndpoint" class="btn btn-primary">+ New Endpoint</button>
+        <span class="stats" id="stats"></span>
+      </div>
+
+      <div class="layout">
+        <aside class="endpoints-panel">
+          <h2>Endpoints</h2>
+          <div id="endpointsList" class="endpoints-list">
+            <p class="empty">No endpoints yet. Create one to start catching webhooks.</p>
+          </div>
+        </aside>
+
+        <section class="requests-panel">
+          <div class="panel-header">
+            <h2>Requests</h2>
+            <div class="actions">
+              <button id="clearRequests" class="btn btn-secondary" disabled>Clear</button>
+              <button id="refreshRequests" class="btn btn-secondary">Refresh</button>
+            </div>
+          </div>
+          <div id="requestsList" class="requests-list">
+            <p class="empty">Select an endpoint to view captured requests.</p>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Request Detail Modal -->
+    <div id="detailModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Request Details</h3>
+          <button class="close" id="closeModal">&times;</button>
+        </div>
+        <div class="modal-body" id="modalBody">
+        </div>
+        <div class="modal-footer">
+          <button id="replayBtn" class="btn btn-primary">🔄 Replay</button>
+          <button id="copyBtn" class="btn btn-secondary">📋 Copy as cURL</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
